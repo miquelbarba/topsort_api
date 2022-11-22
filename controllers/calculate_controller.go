@@ -11,21 +11,26 @@ import (
 
 func Calculate(ctx *gin.Context) {
 	path := ctx.QueryArray("path")
+	if len(path) == 0 {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "missing parameter path"})
+		return
+	}
 
 	edges, err := extractParams(path)
-	if err == nil {
-		sort, errSort := lib.TopologicalSort(edges)
-
-		if errSort == nil {
-			result := [2]string{sort[0], sort[len(sort)-1]}
-
-			ctx.JSON(http.StatusOK, gin.H{"result": result})
-		} else {
-			ctx.JSON(http.StatusBadRequest, gin.H{"message": errSort.Error()})
-		}
-	} else {
+	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
 	}
+
+	sort, errSort := lib.TopologicalSort(edges)
+	if errSort != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": errSort.Error()})
+		return
+	}
+
+	result := [2]string{sort[0], sort[len(sort)-1]}
+
+	ctx.JSON(http.StatusOK, gin.H{"result": result})
 }
 
 const numItems = 2

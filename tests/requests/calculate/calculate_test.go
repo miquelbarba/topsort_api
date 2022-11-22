@@ -31,6 +31,16 @@ func TestCalculate(t *testing.T) {
 		End()
 }
 
+func TestCalculateMissingParam(t *testing.T) {
+	apitest.New().
+		Handler(server).
+		Get("/calculate").
+		Expect(t).
+		Body(`{"message": "missing parameter path"}`).
+		Status(http.StatusBadRequest).
+		End()
+}
+
 func TestCalculateTrimSpaces(t *testing.T) {
 	apitest.New().
 		Handler(server).
