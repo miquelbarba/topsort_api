@@ -32,12 +32,15 @@ const numItems = 2
 
 func extractParams(path []string) ([][]string, error) {
 	edges := make([][]string, len(path))
-	for i, item := range path {
-		edges[i] = strings.Split(item, ",")
 
-		if len(edges[i]) != numItems {
+	for i, item := range path {
+		aux := strings.Split(item, ",")
+
+		if len(aux) != numItems {
 			return edges, fmt.Errorf("invalid parameter %s", item)
 		}
+
+		edges[i] = []string{strings.TrimSpace(aux[0]), strings.TrimSpace(aux[1])}
 	}
 
 	return edges, nil

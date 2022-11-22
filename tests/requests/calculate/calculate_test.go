@@ -31,6 +31,19 @@ func TestCalculate(t *testing.T) {
 		End()
 }
 
+func TestCalculateTrimSpaces(t *testing.T) {
+	apitest.New().
+		Handler(server).
+		Get("/calculate").
+		Query("path", "SFO, ATL").
+		Query("path", "ATL,GSO ").
+		Query("path", "GSO, EWR ").
+		Expect(t).
+		Body(`{"result":["SFO","EWR"]}`).
+		Status(http.StatusOK).
+		End()
+}
+
 func TestCalculateInvalidParam(t *testing.T) {
 	apitest.New().
 		Handler(server).
