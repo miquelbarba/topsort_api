@@ -1,19 +1,23 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
-	"github.com/miquelbarba/topsort_api/lib"
+	"github.com/gin-gonic/gin"
+	"github.com/miquelbarba/topsort_api/controllers"
+	"github.com/miquelbarba/topsort_api/routes"
 )
 
-func main() {
-	array := [][]string{
-		{"IND", "EWR"},
-		{"SFO", "ATL"},
-		{"GSO", "IND"},
-		{"ATL", "GSO"},
-	}
+var server *gin.Engine
+var TopsortController controllers.TopsortController
+var TopsortRouteController routes.TopsortRouteController
 
-	sort := lib.Topsort(array)
-	fmt.Println(sort)
+func init() {
+	server = gin.Default()
+}
+
+func main() {
+	TopsortRouteController.TopsortRoutes(server)
+
+	log.Fatal(server.Run(":8080"))
 }
