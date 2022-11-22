@@ -31,6 +31,20 @@ func TestCalculate(t *testing.T) {
 		End()
 }
 
+func TestCalculateInvalidParam(t *testing.T) {
+	apitest.New().
+		Handler(server).
+		Get("/calculate").
+		Query("path", "IND,EWR").
+		Query("path", "SFO").
+		Query("path", "GSO,IND").
+		Query("path", "ATL,GSO").
+		Expect(t).
+		Body(`{"message": "invalid parameter SFO"}`).
+		Status(http.StatusBadRequest).
+		End()
+}
+
 func TestMain(m *testing.M) {
 	setUp()
 
