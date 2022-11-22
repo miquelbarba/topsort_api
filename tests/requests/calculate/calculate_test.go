@@ -31,6 +31,19 @@ func TestCalculate(t *testing.T) {
 		End()
 }
 
+func TestCalculateTrimSpaces(t *testing.T) {
+	apitest.New().
+		Handler(server).
+		Get("/calculate").
+		Query("path", "SFO, ATL").
+		Query("path", "ATL,GSO ").
+		Query("path", "GSO, EWR ").
+		Expect(t).
+		Body(`{"result":["SFO","EWR"]}`).
+		Status(http.StatusOK).
+		End()
+}
+
 func TestCalculateInvalidParam(t *testing.T) {
 	apitest.New().
 		Handler(server).
@@ -41,6 +54,18 @@ func TestCalculateInvalidParam(t *testing.T) {
 		Query("path", "ATL,GSO").
 		Expect(t).
 		Body(`{"message": "invalid parameter SFO"}`).
+		Status(http.StatusBadRequest).
+		End()
+}
+
+func TestCalculateInvalidPath(t *testing.T) {
+	apitest.New().
+		Handler(server).
+		Get("/calculate").
+		Query("path", "IND,EWR").
+		Query("path", "GSO,ATL").
+		Expect(t).
+		Body(`{"message": "graph with separated paths"}`).
 		Status(http.StatusBadRequest).
 		End()
 }

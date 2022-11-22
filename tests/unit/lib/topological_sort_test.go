@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 
@@ -27,10 +28,31 @@ func TestTopologicalSortEmpty(t *testing.T) {
 	testTopologicalSort(t, input, expected)
 }
 
+func TestTopologicalSortError(t *testing.T) {
+	input := [][]string{{"IND", "EWR"}, {"SFO", "ATL"}}
+	_, err := lib.TopologicalSort(input)
+
+	if err.Error() != "graph with separated paths" {
+		t.Errorf("expected to receive graph with separated paths error")
+	}
+}
+
+func TestTopologicalSortErrorWithRepeated(t *testing.T) {
+	input := [][]string{{"IND", "EWR"}, {"SFO", "ATL"}, {"SFO", "ATL"}}
+	res, err := lib.TopologicalSort(input)
+
+	fmt.Println(res)
+	fmt.Println(err)
+
+	if err.Error() != "graph with separated paths" {
+		t.Errorf("expected to receive graph with separated paths error")
+	}
+}
+
 func testTopologicalSort(t *testing.T, input [][]string, expected []string) {
 	t.Helper()
 
-	result := lib.TopologicalSort(input)
+	result, _ := lib.TopologicalSort(input)
 	if !reflect.DeepEqual(result, expected) {
 		t.Errorf("result %q, expected %q", result, expected)
 	}
