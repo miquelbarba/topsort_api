@@ -8,10 +8,7 @@ import (
 	"github.com/miquelbarba/topsort_api/lib"
 )
 
-type TopsortController struct {
-}
-
-func (cnt *TopsortController) Topsort(ctx *gin.Context) {
+func Calculate(ctx *gin.Context) {
 	path := ctx.QueryArray("path")
 
 	edges := make([][]string, len(path))
@@ -19,9 +16,9 @@ func (cnt *TopsortController) Topsort(ctx *gin.Context) {
 		edges[i] = strings.Split(item, ",")
 	}
 
-	sort := lib.Topsort(edges)
+	sort := lib.TopologicalSort(edges)
 
-	result := []string{sort[0], sort[len(sort)-1]}
+	result := [2]string{sort[0], sort[len(sort)-1]}
 
 	ctx.JSON(http.StatusOK, gin.H{"result": result})
 }

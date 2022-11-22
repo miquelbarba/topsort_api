@@ -4,7 +4,7 @@ import (
 	"github.com/dominikbraun/graph"
 )
 
-func Topsort(edges [][]string) []string {
+func TopologicalSort(edges [][]string) []string {
 	topsort, _ := graph.TopologicalSort(buildGraph(edges))
 
 	return topsort
