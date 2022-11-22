@@ -45,6 +45,18 @@ func TestCalculateInvalidParam(t *testing.T) {
 		End()
 }
 
+func TestCalculateInvalidPath(t *testing.T) {
+	apitest.New().
+		Handler(server).
+		Get("/calculate").
+		Query("path", "IND,EWR").
+		Query("path", "GSO,ATL").
+		Expect(t).
+		Body(`{"message": "invalid graph"}`).
+		Status(http.StatusBadRequest).
+		End()
+}
+
 func TestMain(m *testing.M) {
 	setUp()
 

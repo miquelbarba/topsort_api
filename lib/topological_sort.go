@@ -1,13 +1,25 @@
 package lib
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/dominikbraun/graph"
 )
 
-func TopologicalSort(edges [][]string) []string {
-	topsort, _ := graph.TopologicalSort(buildGraph(edges))
+func TopologicalSort(edges [][]string) ([]string, error) {
+	if len(edges) == 0 {
+		return []string{}, nil
+	}
 
-	return topsort
+	uniqueEdges := uniqueEdges(edges)
+	topsort, err := graph.TopologicalSort(buildGraph(uniqueEdges))
+
+	if len(uniqueEdges)+1 != len(topsort) {
+		return nil, errors.New("invalid graph")
+	}
+
+	return topsort, err
 }
 
 func buildGraph(edges [][]string) graph.Graph[string, string] {
@@ -44,6 +56,23 @@ func unique(s []string) []string {
 			inResult[str] = true
 
 			result = append(result, str)
+		}
+	}
+
+	return result
+}
+
+func uniqueEdges(s [][]string) [][]string {
+	inResult := make(map[string]bool)
+
+	var result [][]string
+
+	for _, item := range s {
+		str := fmt.Sprintf("%s_%s", item[0], item[1])
+		if _, ok := inResult[str]; !ok {
+			inResult[str] = true
+
+			result = append(result, item)
 		}
 	}
 

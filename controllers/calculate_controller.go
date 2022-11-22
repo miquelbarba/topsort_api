@@ -14,10 +14,15 @@ func Calculate(ctx *gin.Context) {
 
 	edges, err := extractParams(path)
 	if err == nil {
-		sort := lib.TopologicalSort(edges)
-		result := [2]string{sort[0], sort[len(sort)-1]}
+		sort, errSort := lib.TopologicalSort(edges)
 
-		ctx.JSON(http.StatusOK, gin.H{"result": result})
+		if errSort == nil {
+			result := [2]string{sort[0], sort[len(sort)-1]}
+
+			ctx.JSON(http.StatusOK, gin.H{"result": result})
+		} else {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": errSort.Error()})
+		}
 	} else {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 	}
