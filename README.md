@@ -13,12 +13,21 @@ To start the server in port 8080:
 
 Usage
 -----
-The flights are passed as an array in the query param "path", each item of the array is one flight with the origin and destination separated with a comma. As a response we return a JSON with an array where the first item is the first airport and the second item is the final airport.
+
+The server implements only one endpoint /calculate that is only accessible via the HTTP GET method.
+This endpoint has one parameter "path" received as a query param. This parameter is an array, where each item is one flight with the origin and destination separated with a comma. 
+When successful, an HTTP 200 status is returned with a JSON in the body that contains an array with two items, the first is the origin airport and the second item is the final airport.
 Example:
 
     $ curl http://localhost:8080/calculate?path=IND,EWR&path=SFO,ATL&path=GSO,IND&path=ATL,GSO
 
     {"result":["SFO","EWR"]}
+
+In the case of an error, the HTTP status indicates the error and in the body the message of the error
+
+    $ curl http://localhost:8080/calculate?path=IND,EWR&path=SFO,ATL&path=GSO,IND&path=ATL
+
+    {"message":"invalid parameter ATL"}
 
 Tests
 -----
