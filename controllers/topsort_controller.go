@@ -8,10 +8,7 @@ import (
 	"github.com/miquelbarba/topsort_api/lib"
 )
 
-type TopsortController struct {
-}
-
-func (cnt *TopsortController) Topsort(ctx *gin.Context) {
+func Topsort(ctx *gin.Context) {
 	path := ctx.QueryArray("path")
 
 	edges := make([][]string, len(path))

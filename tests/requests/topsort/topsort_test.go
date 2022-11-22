@@ -6,16 +6,15 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/miquelbarba/topsort_api/routes"
+	"github.com/miquelbarba/topsort_api/controllers"
 	"github.com/steinfletcher/apitest"
 )
 
-var TopsortRouteController routes.TopsortRouteController
 var server *gin.Engine
 
 func setUp() {
 	server = gin.Default()
-	TopsortRouteController.TopsortRoutes(server)
+	server.GET("/topsort", controllers.Topsort)
 }
 
 func TestCalculateRoute(t *testing.T) {
