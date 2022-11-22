@@ -52,7 +52,7 @@ func TestCalculateInvalidPath(t *testing.T) {
 		Query("path", "IND,EWR").
 		Query("path", "GSO,ATL").
 		Expect(t).
-		Body(`{"message": "invalid graph"}`).
+		Body(`{"message": "graph with separated paths"}`).
 		Status(http.StatusBadRequest).
 		End()
 }

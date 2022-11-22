@@ -32,8 +32,8 @@ func TestTopologicalSortError(t *testing.T) {
 	input := [][]string{{"IND", "EWR"}, {"SFO", "ATL"}}
 	_, err := lib.TopologicalSort(input)
 
-	if err.Error() != "invalid graph" {
-		t.Errorf("expected to receive an error")
+	if err.Error() != "graph with separated paths" {
+		t.Errorf("expected to receive graph with separated paths error")
 	}
 }
 
@@ -44,8 +44,8 @@ func TestTopologicalSortErrorWithRepeated(t *testing.T) {
 	fmt.Println(res)
 	fmt.Println(err)
 
-	if err.Error() != "invalid graph" {
-		t.Errorf("expected to receive an error")
+	if err.Error() != "graph with separated paths" {
+		t.Errorf("expected to receive graph with separated paths error")
 	}
 }
 

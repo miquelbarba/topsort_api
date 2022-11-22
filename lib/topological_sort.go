@@ -15,18 +15,21 @@ func TopologicalSort(edges [][]string) ([]string, error) {
 	uniqueEdges := uniqueEdges(edges)
 	topsort, err := graph.TopologicalSort(buildGraph(uniqueEdges))
 
-	if len(uniqueEdges)+1 != len(topsort) {
-		return nil, errors.New("invalid graph")
+	if err != nil {
+		return nil, err
 	}
 
-	return topsort, err
+	if len(uniqueEdges)+1 != len(topsort) {
+		return nil, errors.New("graph with separated paths")
+	}
+
+	return topsort, nil
 }
 
 func buildGraph(edges [][]string) graph.Graph[string, string] {
 	g := graph.New(graph.StringHash, graph.Directed(), graph.PreventCycles())
 
-	vertices := unique(flatten(edges))
-	for _, vertex := range vertices {
+	for _, vertex := range uniqueVertices(edges) {
 		_ = g.AddVertex(vertex)
 	}
 
@@ -35,6 +38,10 @@ func buildGraph(edges [][]string) graph.Graph[string, string] {
 	}
 
 	return g
+}
+
+func uniqueVertices(edges [][]string) []string {
+	return unique(flatten(edges))
 }
 
 func flatten[T any](lists [][]T) []T {
