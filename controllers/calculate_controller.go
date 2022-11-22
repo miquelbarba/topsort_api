@@ -16,9 +16,9 @@ func Calculate(ctx *gin.Context) {
 		edges[i] = strings.Split(item, ",")
 	}
 
-	sort := lib.Topsort(edges)
+	sort := lib.TopologicalSort(edges)
 
-	result := []string{sort[0], sort[len(sort)-1]}
+	result := [2]string{sort[0], sort[len(sort)-1]}
 
 	ctx.JSON(http.StatusOK, gin.H{"result": result})
 }
