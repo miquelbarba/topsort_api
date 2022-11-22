@@ -9,7 +9,7 @@ import (
 
 func main() {
 	server := gin.Default()
-	server.GET("/topsort", controllers.Topsort)
+	server.GET("/calculate", controllers.Calculate)
 
 	log.Fatal(server.Run(":8080"))
 }

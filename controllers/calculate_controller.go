@@ -8,7 +8,7 @@ import (
 	"github.com/miquelbarba/topsort_api/lib"
 )
 
-func Topsort(ctx *gin.Context) {
+func Calculate(ctx *gin.Context) {
 	path := ctx.QueryArray("path")
 
 	edges := make([][]string, len(path))

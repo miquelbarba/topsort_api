@@ -14,13 +14,13 @@ var server *gin.Engine
 
 func setUp() {
 	server = gin.Default()
-	server.GET("/topsort", controllers.Topsort)
+	server.GET("/calculate", controllers.Calculate)
 }
 
-func TestCalculateRoute(t *testing.T) {
+func TestCalculate(t *testing.T) {
 	apitest.New().
 		Handler(server).
-		Get("/topsort").
+		Get("/calculate").
 		Query("path", "IND,EWR").
 		Query("path", "SFO,ATL").
 		Query("path", "GSO,IND").
